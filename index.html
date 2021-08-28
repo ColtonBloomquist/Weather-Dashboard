@@ -26,40 +26,48 @@
         <h1 class="display-4" id="jumbotron">Weather Dashboard</h1>
       </div>
     </div>
+
+
     <main class="container-fluid">
       <div class="row">
-        <div class="col-3 m-2 bg-light">
+        <div class="col-12 col-md-3 bg-light">
           <form class="border" id="city-search-form"></form>
           <h3>Search for a City:</h3>
-            <div>
+            
               <input 
                 type="text"
                 class="form-input"
                 id="city-input"
               />
-            </div>
-            <div>
+            
+            
               <button
                 id="add-city"
-                class="btn btn-outline-secondary gradient-custom2 m-1 text-white btn-s1"
+                class="btn btn-outline-secondary gradient-custom2 m-1 text-white btn-s1 add-city"
                 type="submit"
                 >Search
               </button>
-            </div>
+            
             </form>
+
             <div class="saved-cities" id="saved-cities-button"></div>
            </div> 
+
+
            <div class="col-12 col-md-9">
-             <div class="row border selected-city" id="current-forecast">
+             <div class="row border selected-city pb-4" id="current-forecast">
                <div class="col-12">
                  <h2 id="searched-city"></h2>
                  <div id="current-weather-container" class="list-group"></div>
                </div>
              </div>
+
+
              <div class="row border" id="five-day-forecast">
-               <h2 class="col-12" id="weather"></h2>
-               <div class="d-flex" id="five-day-container"></div>
+               <h3 class="col-12 pb-2 pt-2 font-weight-bold" id="daily-forcast">Five Day Weather Forecast:</h3>
+               <div class="d-flex gradient-custom2" id="five-day-forecast-container"></div>
              </div>
+           </div>
            </div>
           
           
@@ -71,6 +79,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script src="assets/js/script.js"></script>
   </body>
 </html>
