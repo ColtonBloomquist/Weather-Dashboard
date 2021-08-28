@@ -1,3 +1,42 @@
+ion-icon {
+  color: whitesmoke;
+  --ionicon-stroke-width: 80px;
+}
+
+.green {
+  background-color: green;
+}
+.yellow {
+  background-color: rgb(195, 195, 33);
+}
+
+.red {
+  background-color: rgb(250, 93, 93);
+}
+
+#jumbotron {
+  font-weight: 600;
+}
+
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #2d1e3e;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(45, 30, 62, 1),
+    rgba(15, 103, 255, 1)
+  );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(
+    to right,
+    rgba(45, 30, 62, 1),
+    rgba(15, 103, 255, 1)
+  );
+}
+
 .gradient-custom2 {
   /* fallback for old browsers */
   background: #8e5dc6;
@@ -15,4 +54,11 @@
     rgba(142, 93, 198, 0.7),
     rgba(82, 145, 255, 0.7)
   );
+}
+
+.btn-s1 {
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 10px;
+  width: 89%;
 }
