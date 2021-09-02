@@ -9,13 +9,12 @@ var citySearchInputEl = document.querySelector("#searched-city");
 var fiveDayForecastContainerEl = document.querySelector(
   "#five-day-forecast-container"
 );
-var savedCities = document.querySelector("#saved-cities-button");
+var savedCitiesButtonEl = document.querySelector("#saved-cities-button");
 
 var addCity = document.querySelector(".add-city");
 
 //get form submition and use to search/save
 var formSubmitHandler = function (event) {
-  console.log("button was clicked");
   event.preventDefault();
   var cityName = cityInputEl.value.trim();
   if (cityName) {
@@ -27,8 +26,8 @@ var formSubmitHandler = function (event) {
   } else {
     alert("Please enter a valid city name");
   }
-  //saveSearch();
-  //searchedCity(cityName);
+  saveSearchedCities();
+  saveSearch(cityName);
 };
 
 var getCityWeather = function (cityName) {
@@ -137,21 +136,38 @@ var displayUVI = function (index) {
 };
 
 var saveSearchedCities = function () {
+  //console.log(JSON.stringify(cities));
   localStorage.setItem("cities", JSON.stringify(cities));
+};
+
+var loadSearchedCities = function () {
+  cities = JSON.parse(localStorage.getItem("cities"));
+  console.log(cities);
+  var citiesFiltered = cities.filter(function (value, index, self) {
+    return (
+      self.findIndex(function (m) {
+        return m.cityName === value.cityName;
+      }) === index
+    );
+  });
+  console.log(citiesFiltered);
+  citiesFiltered.forEach(function (city) {
+    saveSearch(city.cityName);
+  });
 };
 
 //get the full five day forecast
 
 var fiveDayForecast = function (cityName) {
   var apiKey = "844421298d794574c100e3409cee0499";
-  var apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=imperial&appid=${apiKey}`;
-
+  var apiUrl = `https://api.openweathermap.org/data/2.5/forecast/?q=${cityName}&units=imperial&appid=${apiKey}`;
+  console.log(apiUrl);
   //fetch five day
 
   fetch(apiUrl).then(function (response) {
     response.json().then(function (data) {
       displayFiveDayForecast(data);
-      console.log(response);
+      //console.log(response);
     });
   });
 };
@@ -167,7 +183,7 @@ var displayFiveDayForecast = function (weather) {
 
   // for loop to go through weather information and display styled cards to page
 
-  for (var i = 5; i < forecast.length; i = i + 8) {
+  for (var i = 0; i < 40; i = i + 8) {
     var dailyForecast = forecast[i];
 
     var forecastEl = document.createElement("div");
@@ -180,51 +196,71 @@ var displayFiveDayForecast = function (weather) {
     forecastDate.textContent = moment
       .unix(dailyForecast.dt)
       .format("MMM D, YYYY");
-    forecastDate.classList = "card-header";
+    forecastDate.classList = "card-header text-center";
     forecastEl.appendChild(forecastDate);
+
+    //get weather image and add to card
+    var weatherIcon = document.createElement("img");
+    weatherIcon.classList = "card-body";
+    weatherIcon.setAttribute(
+      "src",
+      `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`
+    );
+
+    forecastEl.appendChild(weatherIcon);
+
+    //get temp and add to card
+
+    var forecastTempEl = document.createElement("span");
+    forecastTempEl.classList = "card-body";
+    forecastTempEl.textContent = "Temp: " + dailyForecast.main.temp + " °F";
+    console.log(dailyForecast);
+
+    forecastEl.appendChild(forecastTempEl);
+
+    //get humidity and add to card
+
+    var forecastHumidityEl = document.createElement("span");
+    forecastHumidityEl.classList = "card-body";
+    forecastHumidityEl.textContent =
+      "Humidity: " + dailyForecast.main.humidity + "  %";
+
+    forecastEl.appendChild(forecastHumidityEl);
+
+    //get windspeed and add to card
+
+    var forecastWindSpeedEl = document.createElement("span");
+    forecastWindSpeedEl.classList = "card-body";
+    forecastWindSpeedEl.textContent =
+      "Wind Speed: " + dailyForecast.wind.speed + "  MPH";
+
+    forecastEl.appendChild(forecastWindSpeedEl);
+
+    //append all to forecast container
+
+    fiveDayForecastContainerEl.appendChild(forecastEl);
   }
+};
 
-  //get weather image and add to card
-  var weatherIcon = document.createElement("img");
-  weatherIcon.classList = "card-body";
-  weatherIcon.setAttribute(
-    "src",
-    `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`
-  );
+var savedCities = [];
 
-  forecastEl.appendChild(weatherIcon);
+var saveSearch = function (saveSearch) {
+  savedCitiesEl = document.createElement("button");
+  savedCitiesEl.textContent = saveSearch;
+  savedCitiesEl.classList = "d-flex w-100 gradient-custom2 border p-2";
+  savedCitiesEl.setAttribute("searched-city", saveSearch);
+  savedCitiesEl.setAttribute("type", "submit");
 
-  //get temp and add to card
+  savedCitiesButtonEl.prepend(savedCitiesEl);
+};
 
-  var forecastTempEl = document.createElement("span");
-  forecastTempEl.classList = "card-body";
-  forecastTempEl.textContent = "Temp: " + dailyForecast.main.temp + " °F";
-  console.log(dailyForecast);
-
-  forecastEl.appendChild(forecastTempEl);
-
-  //get humidity and add to card
-
-  var forecastHumidityEl = document.createElement("span");
-  forecastHumidityEl.classList = "card-body";
-  forecastHumidityEl.textContent =
-    "Humidity: " + dailyForecast.main.humidity + "  %";
-
-  forecastEl.appendChild(forecastHumidityEl);
-
-  //get windspeed and add to card
-
-  var forecastWindSpeedEl = document.createElement("span");
-  forecastWindSpeedEl.classList = "card-body";
-  forecastWindSpeedEl.textContent =
-    "Wind Speed: " + dailyForecast.wind.speed + "  MPH";
-
-  forecastEl.appendChild(forecastWindSpeedEl);
-
-  //append all to forecast container
-
-  fiveDayForecastContainerEl.appendChild(forecastEl);
-  daily;
+var savedCitiesHandler = function (event) {
+  var city = event.target.getAttribute("searched-city");
+  console.log(city);
+  if (city) {
+    getCityWeather(city);
+    fiveDayForecast(city);
+  }
 };
 
 //event listeners for form
@@ -232,3 +268,7 @@ var displayFiveDayForecast = function (weather) {
 document
   .getElementById("add-city")
   .addEventListener("click", formSubmitHandler);
+
+savedCitiesButtonEl.addEventListener("click", savedCitiesHandler);
+
+loadSearchedCities();
