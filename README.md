@@ -13,7 +13,7 @@ Plan trips accordingly with this weather dashboard
 
 ## Website
 
-https://coltonbloomquist.github.io/Weather-Dashboard/
+https://coltonbloomquist.github.io/weather-dashboard/
 
 ## Screenshot of webpage
 
